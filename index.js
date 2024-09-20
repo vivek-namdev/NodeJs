@@ -1,10 +1,29 @@
-function sum(a, b) {
-    return a+b;
-}
+const { Command } = require('commander');
+const program = new Command();
 
-function multiply(a, b) {
-    return a*b;
-}
+program
+  .name('counter')
+  .description('CLI to do file based tasks')
+  .version('0.8.0');
 
-console.log(sum(1,2));
-console.log(multiply(1,2));
+ program.command('countLines')
+ .description('Count the number of lines in a file')
+ .argument('<file>', 'file to count')
+ .action((file) => {
+    const fs = require('fs');
+    fs.readFile(file, 'utf-8', (err, data) => {
+        if(err) {
+            return console.log(err);
+        }
+        let total = 0;
+        for(let i=1; i<data.length; i++) {
+            if(data[i] === '\n') {
+                total++;
+            }
+        }
+        console.log(`total number of lines in ${file} is ${total}`)
+    });
+ });
+
+
+ program.parse();
